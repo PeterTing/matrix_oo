@@ -1,5 +1,7 @@
 EXEC = \
     tests/test-matrix \
+    tests/test-matrix_sse \
+    tests/test-matrix_avx \
     tests/test-stopwatch
 
 GIT_HOOKS := .git/hooks/applied
@@ -12,12 +14,14 @@ $(GIT_HOOKS):
 	@echo
 
 CC ?= gcc
-CFLAGS = -Wall -std=gnu99 -g -O2 -I.
+CFLAGS = -Wall -std=gnu99 -g -O2 -I. -msse -mavx
 LDFLAGS = -lpthread
 
 OBJS := \
 	stopwatch.o \
-	matrix_naive.o
+	matrix_naive.o\
+	matrix_sse.o\
+	matrix_avx.o
 
 deps := $(OBJS:%.o=%.o.d)
 OBJS := $(addprefix $(OUT)/,$(OBJS))
